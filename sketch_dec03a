@@ -1,0 +1,28 @@
+/*
+ * Fil: sketch_dec03a
+ * Elev: Matteo Torquato Perillo
+ * Datum för senaste ändring: 25/02 - 2024
+ * Funktion: Detta program använder sig av en krokodilklämma för att få en piezohögtalare att låta enligt strömmen som krokodilklämman avläser i det den är kopplad till.
+ */
+
+// Deklarera vilka pins som används för vilket syfte
+const int analogInPin = A0;
+const int piezoPin = 9;
+
+// Deklarera variabel för input från krokodilklämman
+int sensorValue = 0;
+
+void setup() {
+  Serial.begin(9600);
+
+  // Initiera pins
+  pinMode(analogInPin, INPUT);
+  pinMode(piezoPin, OUTPUT); 
+}
+
+void loop() {
+  sensorValue = analogRead(analogInPin); // Variabeln sensorValue = krokodilklämmans avlästa värde, alltså strömmen i växten
+  tone(piezoPin, (sensorValue / 1000)); // Spela en ton på piezohögtalaren enligt sensorValue, delat på 1000 för en mer passande skala. Kommer bara att låta när sensorValue närmar sig maxgränsen (1023)
+  Serial.println(sensorValue); // Printa krokodilklämmans avlästa värde till konsolen
+  delay(100); // Uppdatera loopen var tiondels sekund
+}
